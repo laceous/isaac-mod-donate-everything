@@ -1,0 +1,1 @@
+# isaac-mod-donate-everything
