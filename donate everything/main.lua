@@ -215,7 +215,13 @@ if REPENTOGON then
       return
     end
     
-    local unjam = entitySlot.Variant == SlotVariant.DONATION_MACHINE and mod.state.unjamDonationMachines or mod.state.unjamGreedDonationMachines
+    local unjam
+    if entitySlot.Variant == SlotVariant.DONATION_MACHINE then
+      unjam = mod.state.unjamDonationMachines
+    else
+      unjam = mod.state.unjamGreedDonationMachines
+    end
+    
     if unjam then
       local flag = entitySlot.Variant == SlotVariant.DONATION_MACHINE and GameStateFlag.STATE_DONATION_SLOT_JAMMED or GameStateFlag.STATE_GREED_SLOT_JAMMED
       if game:GetStateFlag(flag) then
