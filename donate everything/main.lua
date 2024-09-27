@@ -154,6 +154,12 @@ if REPENTOGON then
   -- MC_PRE_SLOT_COLLISION : no coins have been removed from player, no coins have been inserted into machine
   -- MC_POST_SLOT_COLLISION : 1 coin has already been removed from player, no coins have been inserted into machine yet
   function mod:onPostSlotCollision(entitySlot, collider, low)
+    -- challenge, seeded, seed effect, rerun, victory lap
+    if game:AchievementUnlocksDisallowed() or Isaac.GetChallenge() ~= Challenge.CHALLENGE_NULL or game:GetVictoryLap() > 0 then
+      mod.frame = game:GetFrameCount()
+      return
+    end
+    
     if (entitySlot:GetState() == 1 or entitySlot:GetState() == 2) and entitySlot:GetTouch() == 0 and entitySlot:GetTimeout() == 0 and game:GetFrameCount() - mod.frame > 1 and collider.Type == EntityType.ENTITY_PLAYER then
       local player = collider:ToPlayer()
       local isBaby = player:GetBabySkin() ~= BabySubType.BABY_UNASSIGNED

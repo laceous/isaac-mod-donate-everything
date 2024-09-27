@@ -12,7 +12,7 @@ This behavior is limited to regular players. So, no co-op babies or Strawmen.
 As a bonus, Mod Config Menu will let you toggle donation machine state, fix broken machines, and even automatically unjam machines using newer Repentogon methods that won't slow you down in the middle of donating.
 
 All of the automation here requires Repentogon. The MCM toggles are available to the Vanilla API.</description>
-    <version>1.3</version>
+    <version>1.4</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Tweaks"/>
