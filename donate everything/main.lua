@@ -160,6 +160,7 @@ if REPENTOGON then
       return
     end
     
+    -- SlotState.IDLE/CHOICE/REWARD
     if (entitySlot:GetState() == 1 or entitySlot:GetState() == 2) and entitySlot:GetTouch() == 0 and entitySlot:GetTimeout() == 0 and game:GetFrameCount() - mod.frame > 1 and collider.Type == EntityType.ENTITY_PLAYER then
       local player = collider:ToPlayer()
       local isBaby = player:GetBabySkin() ~= BabySubType.BABY_UNASSIGNED
@@ -173,12 +174,7 @@ if REPENTOGON then
           local gameData = Isaac.GetPersistentGameData()
           local stat = entitySlot.Variant == SlotVariant.DONATION_MACHINE and EventCounter.DONATION_MACHINE_COUNTER or EventCounter.GREED_DONATION_MACHINE_COUNTER
           local count = gameData:GetEventCounter(stat) % 1000 -- normalize
-          local coins
-          if PickupCapCoinNum then -- No Pickup Cap mod
-            coins = PickupCapCoinNum - 1
-          else
-            coins = player:GetNumCoins()
-          end
+          local coins = PickupCapCoinNum and PickupCapCoinNum - 1 or player:GetNumCoins() -- No Pickup Cap mod
           if count + coins >= 999 then
             coins = 999 - count - 1
           end
@@ -243,12 +239,12 @@ if REPENTOGON then
         game:SetStateFlag(flag, false)
       end
       
-      if entitySlot:GetState() == 3 then -- broken/jammed
+      if entitySlot:GetState() == 3 then -- broken/jammed, SlotState.DESTROYED
         local sprite = entitySlot:GetSprite()
         local animation = sprite:GetAnimation()
         
         if animation == 'CoinJam' or animation == 'CoinJam2' or animation == 'CoinJam3' or animation == 'CoinJam4' then
-          entitySlot:SetState(1)
+          entitySlot:SetState(1) -- SlotState.IDLE
           sprite:SetFrame('Prize', 0)
           
           -- set the correct number
