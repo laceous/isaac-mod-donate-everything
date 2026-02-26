@@ -173,12 +173,21 @@ if REPENTOGON then
           local gameData = Isaac.GetPersistentGameData()
           local stat = entitySlot.Variant == SlotVariant.DONATION_MACHINE and EventCounter.DONATION_MACHINE_COUNTER or EventCounter.GREED_DONATION_MACHINE_COUNTER
           local count = gameData:GetEventCounter(stat) % 1000 -- normalize
-          local coins = player:GetNumCoins()
+          local coins
+          if PickupCapCoinNum then -- No Pickup Cap mod
+            coins = PickupCapCoinNum - 1
+          else
+            coins = player:GetNumCoins()
+          end
           if count + coins >= 999 then
             coins = 999 - count - 1
           end
           if coins > 0 then
-            player:AddCoins(coins * -1)
+            if PickupCapCoinNum then
+              PickupCapCoinNum = PickupCapCoinNum - coins
+            else
+              player:AddCoins(coins * -1)
+            end
             gameData:IncreaseEventCounter(stat, coins)
             
             -- additional donation machine behavior
